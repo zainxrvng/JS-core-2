@@ -1,0 +1,95 @@
+Section 1: Array Advanced Methods
+Task 1.1 - map vs forEach vs reduce
+Findings:
+map: transforms each element, returns new array, original unchanged
+forEach: executes callback per element, returns undefined, for side effects only
+reduce: collapses array to single value, requires accumulator and initialValue
+Always provide initialValue to reduce for empty array safety
+Errors made:
+Assigned forEach result to variable, got undefined
+Forgot initialValue in reduce, accumulator started as first element (wrong type)
+Confused parameter order in reduce: (acc, item) not (item, acc)
+Tried to use forEach like map without external array + push
+Task 1.2 - filter + reduce
+Findings:
+filter creates subset array, reduce aggregates subset
+Chaining: .filter().reduce() works because filter returns array
+Changing conditions shows different outputs, proves reusability
+Errors made:
+Chained wrong: reduce then filter (reduce returns non-array)
+Forgot filter returns new array, thought it modified original
+reduce callback used wrong property access after filter changed structure
+Task 1.3 - Custom Array Method
+Findings:
+Simulating map: create result array, loop with index, push callback results
+Must accept callback and optional thisArg like real methods
+Callback receives (element, index, array) in that order
+Real methods call callback for every index including sparse array holes
+Errors made:
+Used native map inside custom map (cheating, not simulating)
+Forgot to handle sparse arrays (holes), used for..in instead of for loop
+Didn't verify callback execution count with logs
+Section 2: JavaScript Behind the Scenes
+Task 2.1 - Hoisting
+Findings:
+var declarations hoist to top, initialize as undefined
+let/const hoist but stay in temporal dead zone until declaration line
+function declarations hoist fully, callable before definition
+function expressions (var/let/const) don't hoist the assignment, only variable
+Errors made:
+Thought let hoisted same as var, got ReferenceError
+Expected arrow function to hoist like function declaration
+Tried to catch let TDZ error with try/catch at runtime (fails, it's parse time)
+Task 2.2 - Call Stack
+Findings:
+Synchronous code: LIFO stack, inner function completes before outer resumes
+setTimeout schedules callback, doesn't execute immediately
+Event loop moves callbacks to stack after current execution clears
+Async operations break linear execution order
+Errors made:
+Expected setTimeout callback to return value to outer function
+Thought async code blocked execution, didn't understand event loop
+Call stack logs showed entry but no exit logs (forgot to log before return)
+Task 2.3 - Closure
+Findings:
+Inner function retains access to outer scope even after outer function returns
+Closure captures variable reference, not value snapshot
+Multiple closures from same outer function share same scope
+Can modify closed-over variables if exposed via returned methods
+Errors made:
+Called inner function immediately inside outer, didn't return it
+Thought closure captured copy of value, didn't see updates to outer variable
+Forgot to test calling closure after outer variable changed
+Section 3: Destructuring, Rest & Spread
+Task 3.1 - Destructuring with Defaults
+Findings:
+Default values apply only when property is undefined, not null/0/""
+Can rename variables: { oldName: newName } = obj
+Can nest: { address: { city } } = obj
+Rest pattern collects remaining: { a, ...rest } = obj
+Errors made:
+Expected default to apply for empty string "", only works for undefined
+Forgot to declare const/let before destructuring assignment
+Tried to destructure null/undefined, got TypeError
+Task 3.2 - Rest Operator
+Findings:
+...args collects all remaining arguments into real array
+Can use array methods on args (map, filter, reduce)
+Replaces arguments object, more explicit and flexible
+Must be last parameter in function definition
+Errors made:
+Used rest in middle of parameters (syntax error)
+Forgot rest creates array, tried to use as single value
+Named rest parameter poorly (args vs foods), confused self
+Task 3.3 - Spread & References
+Findings:
+Spread {...obj} or [...arr] creates shallow copy only
+Top-level primitives are copied (isolated)
+Nested objects/arrays still shared references between original and copy
+Deep copy requires JSON.parse(JSON.stringify()) or structuredClone
+Reference assignment (=) shares everything, no isolation
+Errors made:
+Thought spread was deep copy, nested changes propagated unexpectedly
+Used = instead of spread, both variables mutated together
+Didn't test nested mutation, missed shallow copy limitation
+JSON.stringify method lost functions and undefined values in object
