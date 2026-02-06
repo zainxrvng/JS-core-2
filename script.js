@@ -1,4 +1,4 @@
-/*
+/* 
 const stellarCatalog = [
   {
     designation: "Alpha Centauri",
@@ -113,6 +113,47 @@ console.log("PRICE>50:", total2);
 
 
 //  task 1.3 //
+const inventory1 = [
+  { item: "nebula", qty: 5, price: 12, category: "cosmic" },
+  { item: "quasar", qty: 3, price: 25, category: "energy" },
+  { item: "pulsar", qty: 8, price: 8, category: "cosmic" },
+  { item: "singularity", qty: 1, price: 100, category: "extreme" },
+  { item: "void", qty: 0, price: 50, category: "mystery" },
+  { item: "supernova", qty: 2, price: 75, category: "energy" },
+  { item: "darkMatter", qty: 12, price: 5, category: "mystery" },
+  { item: "wormhole", qty: 1, price: 200, category: "extreme" },
+  { item: "exoplanet", qty: 7, price: 15, category: "cosmic" },
+  { item: "eventHorizon", qty: 4, price: 40, category: "extreme" },
+];
+
+
+// function filter (array , callback) {
+
+//   let result = []
+//  for (let i = 0; i < inventory1.length; i++) {
+//   if (inventory1[i].item === 'exoplanet') {
+//     result.push(inventory1[i])
+//   }
+  
+//  }
+//   console.log(result);
+//  return result
+
+ 
+// }
+function filter (array, callback) {
+  let result = []
+for (let i = 0; i < inventory1.length; i++) {
+   console.log("CALLBACK-for:", array[i].item);
+  if (callback(array[i])) {
+    result.push(array[i])
+  }
+  
+}
+return result
+}
+
+filter(inventory1, (item) => item.item === "exoplanet");
 
 
 
@@ -214,7 +255,7 @@ function g() {
 }
 
 d();   
-*/
+
 
 // task 2.3 //
 
@@ -303,3 +344,47 @@ const original = {
 const referanceCopy = original
 
 
+
+// Dataset
+const items = [
+  { name: "apple", price: 10, qty: 5 },
+  { name: "banana", price: 5, qty: 0 },
+  { name: "cherry", price: 15, qty: 3 }
+];
+
+// Closure: multiplier function
+function makeMultiplier(amount) {
+  return function(num) {
+    return num * amount;  // factor captured from outer scope
+  };
+}
+
+const double = makeMultiplier(2);
+
+// Pipeline
+console.log("START");
+
+const result = items.map(({ name, price, qty }) => {
+    const itemTotal = double(price);  // use closure
+    console.log(`MAP: ${name} doubled = ${itemTotal}`);
+    return { name, itemTotal, qty };
+  })
+  .filter((item) => {
+    const keep = item.qty > 0;
+    console.log(`FILTER: ${item.name}, inStock=${keep}`);
+    return keep;
+  })
+  .reduce((sum, item) => {
+    const newSum = sum + item.itemTotal;
+    console.log(`REDUCE: ${item.name}, running total = ${newSum}`);
+    return newSum;
+  }, 0);
+
+console.log("FINAL:", result);
+
+// Experiment Logs
+/*
+1. Closure: factor stays 2 even after makeMultiplier finishes
+2. Filter removed banana (qty 0) before reduce ran
+3. Reduce started at 0 because I provided initial value
+*/
